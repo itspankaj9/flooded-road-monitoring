@@ -227,9 +227,26 @@ export async function insertAlert(alert) {
     });
 
   if (error) {
+    if (error.message.includes('column') && (error.message.includes('source_id') || error.message.includes('updated_at'))) {
+      // Fallback if DB doesn't have source_id or updated_at yet
+      const { error: fallbackError } = await supabase
+        .from('alerts')
+        .insert({
+          id: alert.id,
+          title: alert.title,
+          type: alert.type,
+          date: alert.date,
+        });
+      if (fallbackError) {
+        console.error('Failed to insert alert (fallback):', fallbackError.message);
+        return false;
+      }
+      return true;
+    }
     console.error('Failed to insert alert:', error.message);
+    return false;
   }
-  return !error;
+  return true;
 }
 
 export async function deleteAlert(id) {
@@ -246,7 +263,6 @@ export async function deleteAlert(id) {
 
 export async function updateAlert(id, updates) {
   const dbUpdates = { ...updates, updated_at: new Date().toISOString() };
-  // Map camelCase to snake_case
   if (updates.sourceId !== undefined) {
     dbUpdates.source_id = updates.sourceId;
     delete dbUpdates.sourceId;
@@ -254,13 +270,31 @@ export async function updateAlert(id, updates) {
   if (updates.updatedAt !== undefined) {
     delete dbUpdates.updatedAt;
   }
+
   const { error } = await supabase
     .from('alerts')
     .update(dbUpdates)
     .eq('id', id);
 
   if (error) {
+    if (error.message.includes('column') && (error.message.includes('source_id') || error.message.includes('updated_at'))) {
+      const basicUpdates = { ...updates };
+      delete basicUpdates.sourceId;
+      delete basicUpdates.updatedAt;
+      
+      const { error: fallbackError } = await supabase
+        .from('alerts')
+        .update(basicUpdates)
+        .eq('id', id);
+        
+      if (fallbackError) {
+        console.error('Failed to update alert (fallback):', fallbackError.message);
+        return false;
+      }
+      return true;
+    }
     console.error('Failed to update alert:', error.message);
+    return false;
   }
   return !error;
 }
