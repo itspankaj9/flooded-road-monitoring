@@ -1,0 +1,175 @@
+.admin-login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 120px);
+  padding: var(--spacing-xl);
+  background: var(--color-surface);
+  animation: fadeIn 0.5s ease-out;
+}
+
+.admin-login-card {
+  background: var(--color-surface-container);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xxl);
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Glassmorphic glow effect */
+.admin-login-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at top right, rgba(134, 59, 255, 0.1), transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.admin-login-header {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.admin-login-header .material-symbols-outlined {
+  font-size: 48px;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-md);
+  background: var(--color-surface-container-high);
+  padding: var(--spacing-md);
+  border-radius: 50%;
+  border: 1px solid var(--color-outline-variant);
+}
+
+.admin-login-header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-on-surface);
+  margin-bottom: var(--spacing-xs);
+}
+
+.admin-login-header p {
+  color: var(--color-on-surface-variant);
+  font-size: 0.95rem;
+}
+
+.admin-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  position: relative;
+  z-index: 1;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-on-surface);
+}
+
+.form-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.form-input-wrapper .material-symbols-outlined {
+  position: absolute;
+  left: var(--spacing-md);
+  color: var(--color-on-surface-variant);
+  font-size: 20px;
+}
+
+.form-input-wrapper input {
+  width: 100%;
+  background: var(--color-surface-container-low);
+  border: 1px solid var(--color-outline-variant);
+  color: var(--color-on-surface);
+  padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) 45px;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.form-input-wrapper input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background: var(--color-surface-container-highest);
+  box-shadow: 0 0 0 3px rgba(134, 59, 255, 0.15);
+}
+
+.login-error {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--color-error);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.admin-login-btn {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  border: none;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  transition: all 0.2s ease;
+  margin-top: var(--spacing-sm);
+}
+
+.admin-login-btn:hover:not(:disabled) {
+  background: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(134, 59, 255, 0.3);
+}
+
+.admin-login-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.admin-login-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,406 @@
+.top-navbar {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  border-bottom: 1px solid var(--color-outline-variant);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  width: 100%;
+  padding-top: 20px; /* Increased from 15px to 20px for mobile device status bar */
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 56px;
+}
+
+@media (min-width: 768px) {
+  .nav-container {
+    height: 64px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .nav-container {
+    height: 80px;
+  }
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  height: 100%;
+  min-width: 0;
+}
+
+.nav-logo {
+  font-size: clamp(14px, 2.5vw, 22px);
+  font-weight: var(--font-weight-extrabold);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.nav-links {
+  display: none;
+  height: 100%;
+}
+
+@media (min-width: 900px) {
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+  }
+}
+
+/* Mobile menu */
+.nav-links.mobile-open {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 100%; /* Changed from 56px to 100% to dynamically sit below the padded navbar */
+  left: 0;
+  right: 0;
+  height: auto; /* Override height: 100% from .nav-links so it can expand to fit all items */
+  max-height: calc(100vh - 76px); /* Adjusted to -76px to account for the 20px padding-top */
+  background-color: var(--color-primary);
+  padding: var(--spacing-sm) var(--spacing-md) var(--spacing-lg);
+  gap: 0;
+  z-index: 100;
+  border-bottom: 2px solid var(--color-secondary-container);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  overflow-y: auto;
+}
+
+@media (min-width: 768px) {
+  .nav-links.mobile-open {
+    /* Mobile menu is dynamically positioned below navbar via top: 100% */
+  }
+}
+
+.nav-links.mobile-open .nav-link {
+  height: auto;
+  width: 100%;
+  flex-shrink: 0;
+  padding: var(--spacing-md);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-left: 4px solid transparent;
+  min-height: 48px;
+}
+
+.nav-links.mobile-open .nav-link.active {
+  border-left-color: var(--color-secondary-container);
+  border-bottom-color: rgba(255,255,255,0.1);
+  background-color: rgba(255,255,255,0.05);
+}
+
+.nav-link {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--font-size-label);
+  font-weight: var(--font-weight-semibold);
+  color: rgba(255, 255, 255, 0.8);
+  border-bottom: 3px solid transparent;
+  padding-top: 3px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.nav-link:hover {
+  color: var(--color-on-primary);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link.active {
+  color: var(--color-on-primary);
+  border-bottom-color: var(--color-secondary-container);
+  font-weight: var(--font-weight-bold);
+}
+
+/* IoT Test Link - special styling */
+.iot-test-link {
+  background-color: rgba(139, 92, 246, 0.15);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  border-bottom: none !important;
+}
+
+.iot-test-link:hover {
+  background-color: rgba(139, 92, 246, 0.3);
+}
+
+.iot-test-link.active {
+  background-color: rgba(139, 92, 246, 0.3);
+  border-bottom: none !important;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+@media (min-width: 768px) {
+  .nav-actions {
+    gap: var(--spacing-sm);
+  }
+}
+
+.icon-btn, .mobile-menu-btn {
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+  min-width: 40px;
+  min-height: 40px;
+}
+
+.icon-btn:hover, .mobile-menu-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.mobile-menu-btn {
+  display: flex;
+}
+
+@media (min-width: 900px) {
+  .mobile-menu-btn {
+    display: none;
+  }
+}
+
+/* --- Notifications Dropdown Styles --- */
+.notification-wrapper {
+  position: relative;
+}
+
+.icon-btn {
+  position: relative;
+}
+
+.notification-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-error);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--color-primary);
+}
+
+.notifications-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 320px;
+  background-color: var(--color-primary);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.6);
+  z-index: var(--z-dropdown, 200);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: slideDownFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (max-width: 480px) {
+  .notifications-dropdown {
+    position: fixed;
+    top: 72px; /* Below navbar */
+    left: var(--spacing-md);
+    right: var(--spacing-md);
+    width: auto;
+  }
+}
+
+@keyframes slideDownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.notifications-header {
+  padding: var(--spacing-md);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  background-color: var(--color-primary);
+}
+
+.notifications-header h3 {
+  margin: 0;
+  font-size: var(--font-size-label-lg);
+  color: var(--color-on-primary);
+}
+
+.notifications-list {
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.notifications-empty {
+  padding: var(--spacing-xl) var(--spacing-md);
+  text-align: center;
+  color: rgba(255,255,255,0.7);
+  font-size: var(--font-size-body);
+}
+
+.notification-item {
+  display: flex;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.notification-item:hover {
+  background-color: rgba(255,255,255,0.05);
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-icon .material-symbols-outlined {
+  font-size: 18px;
+}
+
+.severity-critical .notification-icon {
+  background-color: rgba(255, 82, 82, 0.15);
+  color: #ff5252;
+}
+
+.severity-high .notification-icon {
+  background-color: rgba(255, 152, 0, 0.15);
+  color: #ff9800;
+}
+
+.severity-medium .notification-icon {
+  background-color: rgba(33, 150, 243, 0.15);
+  color: #2196f3;
+}
+
+.severity-low .notification-icon {
+  background-color: rgba(76, 175, 80, 0.15);
+  color: #4caf50;
+}
+
+.notification-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.notification-content h4 {
+  margin: 0 0 4px 0;
+  font-size: var(--font-size-body);
+  color: var(--color-on-primary);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.3;
+}
+
+.notification-time {
+  font-size: var(--font-size-label);
+  color: rgba(255,255,255,0.6);
+}
+
+.notifications-footer {
+  padding: var(--spacing-sm);
+  text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  background-color: var(--color-primary);
+}
+
+.notifications-footer a {
+  color: var(--color-on-primary);
+  font-size: var(--font-size-label-lg);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  transition: color 0.2s;
+  display: block;
+  padding: var(--spacing-xs) 0;
+}
+
+.notifications-footer a:hover {
+  color: rgba(255,255,255,0.7);
+}
+
+/* --- Language Dropdown Styles --- */
+.lang-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 12px;
+  border-radius: var(--radius-full);
+}
+
+.lang-text {
+  font-size: var(--font-size-label);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.5px;
+}
+
+.lang-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 140px;
+  background-color: var(--color-primary);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.6);
+  z-index: var(--z-dropdown, 200);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: slideDownFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lang-option {
+  padding: 12px 16px;
+  text-align: left;
+  background: none;
+  border: none;
+  color: var(--color-on-primary);
+  font-size: var(--font-size-label-lg);
+  font-family: inherit;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  transition: background-color 0.2s;
+}
+
+.lang-option:last-child {
+  border-bottom: none;
+}
+
+.lang-option:hover {
+  background-color: rgba(255,255,255,0.05);
+}
+
+.lang-option.active {
+  background-color: rgba(255,255,255,0.1);
+  font-weight: bold;
+}

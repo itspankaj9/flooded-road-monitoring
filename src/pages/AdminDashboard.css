@@ -1,0 +1,721 @@
+.admin-dashboard {
+  padding-top: var(--spacing-md);
+  padding-bottom: var(--spacing-lg);
+}
+
+@media (min-width: 768px) {
+  .admin-dashboard {
+    padding-top: var(--spacing-xl);
+    padding-bottom: var(--spacing-2xl);
+  }
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+}
+
+@media (min-width: 768px) {
+  .admin-grid {
+    gap: var(--spacing-lg);
+  }
+}
+
+@media (min-width: 1024px) {
+  .admin-grid {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: clamp(16px, 2.5vw, 24px);
+  font-weight: var(--font-weight-semibold);
+}
+
+.card-title .material-symbols-outlined {
+  color: var(--color-secondary-container);
+}
+
+.toggle-wrapper {
+  margin-top: var(--spacing-sm);
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  font-size: var(--font-size-label);
+}
+
+/* Admin Table — Responsive */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-caption);
+}
+
+@media (min-width: 768px) {
+  .admin-table {
+    font-size: var(--font-size-label);
+  }
+}
+
+.admin-table th, .admin-table td {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-bottom: 1px solid var(--color-outline-variant);
+  text-align: left;
+}
+
+@media (min-width: 768px) {
+  .admin-table th, .admin-table td {
+    padding: var(--spacing-sm);
+  }
+}
+
+.admin-table th {
+  background-color: var(--color-surface-container);
+  font-weight: var(--font-weight-bold);
+  white-space: nowrap;
+}
+
+/* Make admin table horizontally scrollable on small screens */
+.admin-dashboard .card-body:has(.admin-table) {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.override-form {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.override-form .input-field {
+  min-width: 60px;
+}
+
+.input-field {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--color-outline);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: var(--font-size-body);
+  width: 100%;
+  min-height: 36px;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.btn-sm {
+  padding: 6px 10px;
+  font-size: var(--font-size-caption);
+  min-height: 32px;
+}
+
+.roadwork-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.form-group label {
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-label);
+}
+
+.w-full {
+  width: 100%;
+}
+
+/* Road Marking Section */
+.road-marking-section {
+  margin-top: var(--spacing-md);
+}
+
+@media (min-width: 768px) {
+  .road-marking-section {
+    margin-top: var(--spacing-lg);
+  }
+}
+
+.marking-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+  align-items: start;
+}
+
+@media (min-width: 768px) {
+  .marking-grid {
+    gap: var(--spacing-lg);
+  }
+}
+
+@media (min-width: 1024px) {
+  .marking-grid {
+    grid-template-columns: 1.5fr 1fr;
+    align-items: start;
+  }
+}
+
+/* Map area */
+.marking-map-area {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  max-height: 540px;
+}
+
+.marking-map-area::-webkit-scrollbar {
+  width: 4px;
+}
+.marking-map-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+.marking-map-area::-webkit-scrollbar-thumb {
+  background-color: var(--color-outline-variant);
+  border-radius: 4px;
+}
+
+/* Placed Points Bar */
+.placed-points-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: var(--color-surface-container);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-caption);
+  flex-wrap: wrap;
+}
+
+@media (min-width: 768px) {
+  .placed-points-bar {
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-label);
+  }
+}
+
+.placed-points-bar .material-symbols-outlined {
+  color: var(--color-secondary-container);
+}
+
+/* Marking Controls — independently scrollable right panel */
+.marking-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  max-height: 540px;
+}
+
+.marking-controls .card {
+  display: flex;
+  flex-direction: column;
+  max-height: 380px;
+  flex-shrink: 1;
+}
+
+.marking-controls .card-body {
+  overflow-y: auto;
+  flex-grow: 1;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-outline-variant) transparent;
+  padding-right: var(--spacing-xs);
+}
+
+.marking-controls .card-body::-webkit-scrollbar {
+  width: 4px;
+}
+.marking-controls .card-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+.marking-controls .card-body::-webkit-scrollbar-thumb {
+  background-color: var(--color-outline-variant);
+  border-radius: 4px;
+}
+
+@media (min-width: 768px) {
+  .marking-controls {
+    gap: var(--spacing-lg);
+  }
+}
+
+/* Step indicator */
+.marking-step {
+  display: flex;
+  gap: var(--spacing-sm);
+  padding-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--color-outline-variant);
+}
+
+@media (min-width: 768px) {
+  .marking-step {
+    gap: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+  }
+}
+
+.marking-step:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.step-number {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-caption);
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .step-number {
+    width: 28px;
+    height: 28px;
+    font-size: var(--font-size-label);
+  }
+}
+
+.step-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.step-content p {
+  margin-top: 2px;
+}
+
+/* Mark Form */
+.mark-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+}
+
+/* Active marking button */
+.btn-marking-active {
+  background-color: var(--color-error);
+  color: var(--color-on-error);
+  animation: markingBlink 1.5s infinite;
+}
+
+@keyframes markingBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Active Markers List */
+.active-markers-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  max-height: 500px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-outline-variant) transparent;
+  padding-right: var(--spacing-xs);
+}
+
+.active-markers-list::-webkit-scrollbar {
+  width: 4px;
+}
+.active-markers-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.active-markers-list::-webkit-scrollbar-thumb {
+  background-color: var(--color-outline-variant);
+  border-radius: 4px;
+}
+
+.active-marker-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background-color: var(--color-surface-container-low);
+  border-radius: var(--radius-md);
+  transition: background-color 0.2s;
+  flex-wrap: wrap;
+}
+
+.active-marker-item:hover {
+  background-color: var(--color-surface-container);
+}
+
+.marker-color-bar {
+  width: 4px;
+  height: 28px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .marker-color-bar {
+    height: 32px;
+  }
+}
+
+.marker-info {
+  flex: 1 1 200px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.marker-info strong {
+  font-size: var(--font-size-caption);
+  word-break: break-word;
+}
+
+@media (min-width: 768px) {
+  .marker-info strong {
+    font-size: var(--font-size-label);
+  }
+}
+
+/* Disruption Chips (Selection Labels) */
+.disruption-chips {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-sm);
+}
+
+@media (min-width: 480px) {
+  .disruption-chips {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-sm);
+  }
+}
+
+@media (min-width: 1200px) {
+  .disruption-chips {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  }
+}
+
+.disruption-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-xs);
+  background-color: var(--color-surface-container-low);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-on-surface);
+  text-align: center;
+  min-height: 44px;
+}
+
+@media (min-width: 768px) {
+  .disruption-chip {
+    padding: var(--spacing-md) var(--spacing-sm);
+    font-size: var(--font-size-caption);
+  }
+}
+
+.disruption-chip:hover {
+  background-color: var(--chip-bg);
+  border-color: var(--chip-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.disruption-chip.active {
+  background-color: var(--chip-bg);
+  border-color: var(--chip-color);
+  color: var(--color-on-surface);
+  box-shadow: 0 0 0 2px var(--chip-color);
+}
+
+.disruption-chip .material-symbols-outlined {
+  font-size: 20px;
+  color: var(--chip-color);
+}
+
+@media (min-width: 768px) {
+  .disruption-chip .material-symbols-outlined {
+    font-size: 24px;
+  }
+}
+
+.disruption-chip.active .material-symbols-outlined {
+  animation: chipPulse 1.5s infinite;
+}
+
+@keyframes chipPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+/* ===== ADMIN TABS ===== */
+.admin-tabs {
+  display: flex;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--color-outline-variant);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 0;
+}
+
+.admin-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--color-on-surface-variant);
+  font-family: inherit;
+  font-size: var(--font-size-label);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.2s, border-color 0.2s;
+  margin-bottom: -1px;
+}
+
+.admin-tab:hover {
+  color: var(--color-primary);
+}
+
+.admin-tab.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.admin-tab-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+/* Danger outline button */
+.btn-outline-danger {
+  background: none;
+  border: 1px solid var(--color-error);
+  color: var(--color-error);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: background-color 0.2s;
+}
+.btn-outline-danger:hover {
+  background-color: var(--color-error-container);
+}
+
+/* Sensor form grid */
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+}
+
+@media (min-width: 640px) {
+  .form-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Range input */
+.range-input {
+  width: 100%;
+  accent-color: var(--color-primary);
+  height: 6px;
+  cursor: pointer;
+}
+
+/* Roadwork admin list */
+.roadwork-admin-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  max-height: 500px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-outline-variant) transparent;
+  padding-right: var(--spacing-xs);
+}
+
+.roadwork-admin-list::-webkit-scrollbar {
+  width: 4px;
+}
+.roadwork-admin-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.roadwork-admin-list::-webkit-scrollbar-thumb {
+  background-color: var(--color-outline-variant);
+  border-radius: 4px;
+}
+
+.roadwork-admin-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: var(--spacing-sm);
+  background-color: var(--color-surface-container-low);
+  border-radius: var(--radius-md);
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.rw-admin-info {
+  flex: 1 1 250px;
+  min-width: 0;
+}
+
+.rw-admin-actions {
+  display: flex;
+  gap: var(--spacing-xs);
+  flex-shrink: 0;
+}
+
+.edit-rw-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  width: 100%;
+}
+
+.edit-rw-actions {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+/* Alerts admin list */
+.alerts-admin-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  max-height: 500px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-outline-variant) transparent;
+  padding-right: var(--spacing-xs);
+}
+
+.alerts-admin-list::-webkit-scrollbar {
+  width: 4px;
+}
+.alerts-admin-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.alerts-admin-list::-webkit-scrollbar-thumb {
+  background-color: var(--color-outline-variant);
+  border-radius: 4px;
+}
+
+.alert-admin-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-container-low);
+  border-left: 3px solid transparent;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.alert-admin-item.type-error { border-left-color: var(--color-error); }
+.alert-admin-item.type-warning { border-left-color: var(--color-warning, #f59e0b); }
+.alert-admin-item.type-success { border-left-color: #22c55e; }
+.alert-admin-item.type-info { border-left-color: var(--color-primary); }
+
+.alert-admin-info {
+  flex: 1 1 250px;
+  min-width: 0;
+}
+
+/* Sensor add form */
+.sensor-add-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+}
+
+/* ===== IoT DEVICES ADMIN ===== */
+.iot-devices-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.iot-device-admin-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--color-outline);
+  flex-wrap: wrap;
+}
+
+.iot-device-admin-item.status-border-normal {
+  border-left-color: #22c55e;
+}
+
+.iot-device-admin-item.status-border-warning {
+  border-left-color: #f59e0b;
+  background-color: rgba(245, 158, 11, 0.04);
+}
+
+.iot-device-admin-item.status-border-danger {
+  border-left-color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.06);
+}
+
+.iot-device-info {
+  flex: 1 1 250px;
+  min-width: 0;
+}
+
+.edit-iot-form {
+  width: 100%;
+}
+

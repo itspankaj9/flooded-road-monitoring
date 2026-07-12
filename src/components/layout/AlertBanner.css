@@ -1,0 +1,71 @@
+.alert-banner {
+  background-color: var(--color-error);
+  color: var(--color-on-error);
+  padding: var(--spacing-sm) 0;
+  position: relative;
+  z-index: var(--z-alert);
+}
+
+.alert-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  align-items: flex-start;
+}
+
+@media (min-width: 600px) {
+  .alert-container {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.alert-content {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+}
+
+@media (min-width: 480px) {
+  .alert-content {
+    align-items: center;
+  }
+}
+
+.alert-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .alert-icon {
+    font-size: 24px;
+  }
+}
+
+.alert-text {
+  font-size: var(--font-size-caption);
+  line-height: 1.4;
+}
+
+@media (min-width: 768px) {
+  .alert-text {
+    font-size: var(--font-size-label);
+  }
+}
+
+.alert-btn {
+  background-color: var(--color-on-error);
+  color: var(--color-error);
+  font-size: var(--font-size-caption);
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  font-weight: var(--font-weight-bold);
+  white-space: nowrap;
+  min-height: 36px;
+}
+
+.alert-btn:hover {
+  background-color: var(--color-error-container);
+}

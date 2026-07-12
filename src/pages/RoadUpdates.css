@@ -1,0 +1,379 @@
+.road-updates {
+  padding-bottom: var(--spacing-lg);
+}
+
+@media (min-width: 768px) {
+  .road-updates {
+    padding-bottom: var(--spacing-2xl);
+  }
+}
+
+/* Road Map Section */
+.road-hero-bg {
+  background-image: url('../assets/smart_city_road.png');
+}
+
+.road-map-section {
+  margin-top: var(--spacing-xl);
+  margin-bottom: var(--spacing-md);
+}
+
+@media (min-width: 768px) {
+  .road-map-section {
+    margin-top: 64px;
+    margin-bottom: var(--spacing-lg);
+  }
+}
+
+.road-map-section .section-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  border-bottom: 1px solid var(--color-outline-variant);
+  padding-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+@media (min-width: 480px) {
+  .road-map-section .section-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+}
+
+.ru-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+  align-items: start;
+}
+
+@media (min-width: 768px) {
+  .ru-grid {
+    gap: var(--spacing-lg);
+  }
+}
+
+@media (min-width: 1024px) {
+  .ru-grid {
+    grid-template-columns: 2fr 1fr;
+    align-items: start;
+  }
+}
+
+/* Left column — sticky + independently scrollable (all devices) */
+.active-projects {
+  min-width: 0;
+  position: sticky;
+  top: 80px;
+  max-height: calc(100vh - 110px);
+  display: flex;
+  flex-direction: column;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-headline);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+.section-title .material-symbols-outlined {
+  color: var(--color-secondary-container);
+}
+
+.roadworks-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  max-height: 400px;
+  overflow-y: auto;
+  flex-grow: 1;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-outline-variant) transparent;
+  padding-right: var(--spacing-xs);
+}
+
+.roadworks-list > * {
+  flex-shrink: 0;
+}
+
+.roadworks-list::-webkit-scrollbar {
+  width: 4px;
+}
+.roadworks-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.roadworks-list::-webkit-scrollbar-thumb {
+  background-color: var(--color-outline-variant);
+  border-radius: 4px;
+}
+
+@media (min-width: 768px) {
+  .roadworks-list {
+    gap: var(--spacing-md);
+  }
+}
+
+.roadwork-item {
+  padding: var(--spacing-sm);
+  transition: background-color 0.2s;
+}
+
+@media (min-width: 768px) {
+  .roadwork-item {
+    padding: var(--spacing-md);
+  }
+}
+
+.roadwork-item:hover {
+  background-color: var(--color-surface-container-low);
+}
+
+.rw-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-sm);
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.rw-location {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  word-break: break-word;
+}
+
+@media (min-width: 768px) {
+  .rw-location {
+    font-size: var(--font-size-body-lg);
+  }
+}
+
+.rw-detour {
+  background-color: var(--color-surface-container);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-size-label);
+  word-break: break-word;
+}
+
+@media (min-width: 768px) {
+  .rw-detour {
+    margin-bottom: var(--spacing-md);
+    font-size: var(--font-size-body);
+  }
+}
+
+.rw-progress-wrapper {
+  margin-bottom: var(--spacing-sm);
+}
+
+.rw-progress-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-xs);
+}
+
+.rw-progress-text {
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+}
+
+.rw-footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  border-top: 1px solid var(--color-outline-variant);
+  padding-top: var(--spacing-sm);
+}
+
+@media (min-width: 480px) {
+  .rw-footer {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+/* Calendar Styles */
+.mini-calendar {
+  background-color: var(--color-surface-container-lowest);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm);
+}
+
+@media (min-width: 768px) {
+  .mini-calendar {
+    padding: var(--spacing-md);
+  }
+}
+
+.cal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+  color: var(--color-primary);
+}
+
+@media (min-width: 768px) {
+  .cal-header {
+    margin-bottom: var(--spacing-md);
+  }
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  gap: 2px;
+}
+
+@media (min-width: 768px) {
+  .cal-grid {
+    gap: 4px;
+  }
+}
+
+.cal-days {
+  margin-bottom: var(--spacing-xs);
+}
+
+@media (min-width: 768px) {
+  .cal-days {
+    margin-bottom: var(--spacing-sm);
+  }
+}
+
+.cal-dates {
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-caption);
+}
+
+@media (min-width: 768px) {
+  .cal-dates {
+    font-size: var(--font-size-label);
+  }
+}
+
+.cal-dates span {
+  padding: 3px;
+  border-radius: var(--radius-sm);
+}
+
+@media (min-width: 768px) {
+  .cal-dates span {
+    padding: 4px;
+  }
+}
+
+.cal-dates .muted {
+  color: var(--color-outline);
+}
+
+.active-date {
+  font-weight: var(--font-weight-bold);
+  color: var(--color-on-primary);
+}
+
+.active-date.error { background-color: var(--color-error); }
+.active-date.warning { background-color: var(--color-secondary-container); }
+
+.cal-legend {
+  margin-top: var(--spacing-sm);
+  border-top: 1px solid var(--color-outline-variant);
+  padding-top: var(--spacing-sm);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+  font-size: var(--font-size-caption);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .dot {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+.dot.error { background-color: var(--color-error); }
+.dot.warning { background-color: var(--color-secondary-container); }
+
+/* Road Status Summary */
+.status-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-xs);
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .status-summary {
+    gap: var(--spacing-sm);
+  }
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-xs);
+  background-color: var(--color-surface-container-low);
+  border-radius: var(--radius-md);
+}
+
+@media (min-width: 768px) {
+  .summary-item {
+    padding: var(--spacing-sm);
+  }
+}
+
+.summary-count {
+  font-size: clamp(20px, 3vw, 32px);
+  font-weight: var(--font-weight-extrabold);
+}
+
+.summary-count.error { color: var(--color-error); }
+.summary-count.warning { color: var(--color-secondary-container); }
+.summary-count.info { color: #3b82f6; }
+
+/* Recent update items */
+.recent-update-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px solid var(--color-outline-variant);
+}
+
+.recent-update-item:last-child {
+  border-bottom: none;
+}
+
+.recent-update-item .dot {
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.dot.info { background-color: #3b82f6; }
+
