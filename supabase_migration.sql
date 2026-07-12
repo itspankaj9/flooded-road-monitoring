@@ -58,6 +58,8 @@ CREATE TABLE IF NOT EXISTS alerts (
   title TEXT NOT NULL,
   type TEXT NOT NULL DEFAULT 'info',
   date TEXT,
+  source_id TEXT,
+  updated_at TIMESTAMPTZ DEFAULT now(),
   created_at TIMESTAMPTZ DEFAULT now()
 );
 
