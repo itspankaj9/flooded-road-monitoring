@@ -15,3 +15,7 @@ services:
         sync: false
       - key: VITE_OPENWEATHER_API_KEY
         sync: false
+      - key: VITE_MAPBOX_TOKEN
+        sync: false
+      - key: VITE_API_KEY
+        sync: false
