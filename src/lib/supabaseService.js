@@ -197,7 +197,7 @@ export async function fetchAlerts() {
   const { data, error } = await supabase
     .from('alerts')
     .select('*')
-    .order('updated_at', { ascending: false });
+    .order('created_at', { ascending: false });
 
   if (error) {
     console.error('Failed to fetch alerts:', error.message);
