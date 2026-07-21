@@ -300,9 +300,9 @@ export async function updateAlert(id, updates) {
 }
 
 /**
- * Upsert an alert by source_id.
- * If an alert with the same source_id exists, update it.
- * If not, insert a new one.
+ * Upsert an alert by source_id (same place = same alert, update & move to top).
+ * If an alert with the same source_id exists, update it in place.
+ * If source_id column doesn't exist in DB, fall back to matching by alert ID.
  * Returns the alert id (existing or new).
  */
 export async function upsertAlertBySource(alert) {
@@ -311,39 +311,50 @@ export async function upsertAlertBySource(alert) {
     return insertAlert(alert);
   }
 
-  // Check if an alert with this source_id already exists
+  // Strategy 1: Try to find by source_id column
   const { data: existing, error: findError } = await supabase
     .from('alerts')
     .select('id')
     .eq('source_id', alert.sourceId)
     .limit(1);
 
-  if (findError) {
-    console.error('Failed to find alert by source:', findError.message);
-    return insertAlert(alert);
-  }
-
-  if (existing && existing.length > 0) {
-    // Update the existing alert
+  if (!findError && existing && existing.length > 0) {
+    // Found by source_id — update in place (keeps same row, updates content)
     const existingId = existing[0].id;
-    const { error } = await supabase
+    const updatePayload = {
+      title: alert.title,
+      type: alert.type,
+      date: alert.date,
+    };
+    // Try adding updated_at if column exists
+    const { error: updateError } = await supabase
       .from('alerts')
-      .update({
-        title: alert.title,
-        type: alert.type,
-        date: alert.date,
-        updated_at: new Date().toISOString(),
-      })
+      .update({ ...updatePayload, updated_at: new Date().toISOString() })
       .eq('id', existingId);
 
-    if (error) {
-      console.error('Failed to update alert by source:', error.message);
+    if (updateError) {
+      // Fallback without updated_at
+      await supabase.from('alerts').update(updatePayload).eq('id', existingId);
     }
     return existingId;
-  } else {
-    // Insert new
-    return insertAlert(alert);
   }
+
+  // Strategy 2: source_id column missing or no match — try by stable alert ID
+  if (alert.id) {
+    const { data: byId, error: idError } = await supabase
+      .from('alerts')
+      .select('id')
+      .eq('id', alert.id)
+      .limit(1);
+
+    if (!idError && byId && byId.length > 0) {
+      // Found existing alert with same ID — delete old and re-insert to move to top
+      await supabase.from('alerts').delete().eq('id', alert.id);
+    }
+  }
+
+  // Insert (new or replacement) — this gives it the newest created_at = top of list
+  return insertAlert(alert);
 }
 
 // ===== WIFI IoT SENSOR READINGS (ultrasonic sensor via ESP) =====
@@ -413,8 +424,10 @@ export async function fetchWifiIotDevices() {
   return data.map(row => ({
     id: row.id,
     name: row.name,
+    location: row.location || row.name,
     lat: Number(row.lat),
     lng: Number(row.lng),
+    sensorHeightCm: row.sensor_height_cm != null ? Number(row.sensor_height_cm) : 200,
     thresholdWarning: Number(row.threshold_warning),
     thresholdDanger: Number(row.threshold_danger),
     status: row.status,
@@ -425,19 +438,29 @@ export async function fetchWifiIotDevices() {
 }
 
 export async function upsertWifiIotDevice(device) {
+  const dbRow = {
+    id: device.id,
+    name: device.name,
+    lat: device.lat,
+    lng: device.lng,
+    sensor_height_cm: device.sensorHeightCm ?? 200,
+    threshold_warning: device.thresholdWarning,
+    threshold_danger: device.thresholdDanger,
+    status: device.status || 'normal',
+    latest_distance_cm: device.latestDistanceCm || 0,
+    updated_at: new Date().toISOString(),
+  };
+  if (device.location) dbRow.location = device.location;
+
   const { error } = await supabase
     .from('wifi_iot_devices')
-    .upsert({
-      id: device.id,
-      name: device.name,
-      lat: device.lat,
-      lng: device.lng,
-      threshold_warning: device.thresholdWarning,
-      threshold_danger: device.thresholdDanger,
-      status: device.status || 'normal',
-      latest_distance_cm: device.latestDistanceCm || 0,
-      updated_at: new Date().toISOString(),
-    }, { onConflict: 'id' });
+    .upsert(dbRow, { onConflict: 'id' });
+
+  if (error && error.message.includes('location')) {
+    // If location column doesn't exist yet, fallback without it
+    delete dbRow.location;
+    await supabase.from('wifi_iot_devices').upsert(dbRow, { onConflict: 'id' });
+  }
 
   if (error) {
     console.error('Failed to upsert WiFi IoT device:', error.message);

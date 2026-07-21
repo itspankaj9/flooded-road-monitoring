@@ -1,0 +1,210 @@
+/* ========================================================
+   MobileBottomNav — Fixed bottom tab bar (mobile only)
+   Glassmorphism + smooth spring animations
+   Hidden on desktop (≥769px)
+   ======================================================== */
+
+.mobile-bottom-nav {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: 64px;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    
+    /* Glassmorphism */
+    background: var(--color-surface-container-high, #ffffff);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border-top: 1px solid var(--color-outline-variant);
+    
+    /* Layout */
+    align-items: center;
+    justify-content: space-around;
+    
+    /* Entrance animation */
+    animation: bottomNavSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  [data-theme='dark'] .mobile-bottom-nav {
+    background: rgba(10, 10, 14, 0.82);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+}
+
+@keyframes bottomNavSlideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ── Tab Item ── */
+.mobile-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  flex: 1;
+  height: 100%;
+  position: relative;
+  color: var(--color-on-surface-variant);
+  transition: color 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+  background: none;
+  font-family: inherit;
+  padding: 0;
+  outline: none;
+}
+
+/* Touch ripple effect */
+.mobile-tab::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--color-surface-container-highest);
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+}
+
+[data-theme='dark'] .mobile-tab::after {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.mobile-tab:active::after {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  transition-duration: 0.15s;
+}
+
+/* ── Icon wrapper with pill background ── */
+.mobile-tab-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 28px;
+  border-radius: 14px;
+  position: relative;
+  transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  background: transparent;
+}
+
+.mobile-tab-icon .material-symbols-outlined {
+  font-size: 24px;
+  transition: font-variation-settings 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+}
+
+/* ── Tab label ── */
+.mobile-tab-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  opacity: 0.7;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              font-weight 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(0);
+}
+
+/* ── Active State ── */
+.mobile-tab.active {
+  color: var(--color-on-surface);
+}
+
+[data-theme='dark'] .mobile-tab.active {
+  color: #fff;
+}
+
+.mobile-tab.active .mobile-tab-icon {
+  background: linear-gradient(135deg, rgba(253, 139, 0, 0.28) 0%, rgba(253, 139, 0, 0.12) 100%);
+  box-shadow: 0 0 16px rgba(253, 139, 0, 0.15);
+  transform: scale(1);
+}
+
+.mobile-tab.active .mobile-tab-icon .material-symbols-outlined {
+  font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+  color: #fd8b00;
+  transform: scale(1.05);
+}
+
+.mobile-tab.active .mobile-tab-label {
+  opacity: 1;
+  font-weight: 700;
+  color: #fd8b00;
+  transform: translateY(-1px);
+}
+
+/* ── Notification dot on alerts tab ── */
+.mobile-tab-badge {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ef4444;
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
+  animation: badgePulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
+  }
+  50% {
+    transform: scale(1.25);
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
+  }
+}
+
+/* ── Active indicator line (top edge glow) ── */
+.mobile-tab.active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2.5px;
+  border-radius: 0 0 4px 4px;
+  background: linear-gradient(90deg, transparent, #fd8b00, transparent);
+  animation: indicatorFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes indicatorFadeIn {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    width: 20px;
+    opacity: 1;
+  }
+}

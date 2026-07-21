@@ -9,7 +9,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="container footer-container">
         <div className="footer-brand">
-          <span className="footer-logo">GovInfrastructure</span>
+          <span className="footer-logo">FloodWatch</span>
           <p className="footer-copy">© {new Date().getFullYear()} Department of Infrastructure & Emergency Management. All rights reserved.</p>
         </div>
         <nav className="footer-nav">

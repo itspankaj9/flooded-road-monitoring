@@ -12,6 +12,7 @@ const statusBadgeClass = (status) => {
 const RoadUpdates = () => {
   const { t, roadworks } = useAppContext();
   const [showAltRoutes, setShowAltRoutes] = useState(true);
+  const [showInfo, setShowInfo] = useState(false);
 
   const fullClosures = roadworks.filter(r => r.status.includes('Full'));
   const partialLanes = roadworks.filter(r => r.status.includes('Partial'));
@@ -24,8 +25,33 @@ const RoadUpdates = () => {
         <div className="hero-background road-hero-bg"></div>
         <div className="container hero-content">
           <span className="hero-subtitle">{t('road_hero_subtitle')}</span>
-          <h1 className="hero-title">{t('road_hero_title')}</h1>
-          <p className="hero-description">{t('road_hero_desc')}</p>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', flexWrap: 'wrap' }}>
+            <h1 className="hero-title" style={{ margin: 0, display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+              {t('road_hero_title')}
+            </h1>
+            <button 
+              onClick={() => setShowInfo(!showInfo)} 
+              title="Toggle Description"
+              style={{ 
+                background: showInfo ? 'var(--color-primary)' : 'rgba(255,255,255,0.08)', 
+                border: '1px solid var(--color-outline-variant)', 
+                color: showInfo ? '#ffffff' : 'inherit', 
+                cursor: 'pointer', 
+                display: 'inline-flex', 
+                padding: '6px 12px', 
+                borderRadius: '20px', 
+                alignItems: 'center', 
+                gap: '6px',
+                fontSize: '12px',
+                fontWeight: '600',
+                transition: 'all 0.2s'
+              }}
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>info</span>
+              <span>{showInfo ? 'Hide Info' : 'Info'}</span>
+            </button>
+          </div>
+          {showInfo && <p className="hero-description" style={{ marginTop: '12px' }}>{t('road_hero_desc')}</p>}
         </div>
       </section>
 
@@ -56,7 +82,7 @@ const RoadUpdates = () => {
             </button>
           </div>
         </div>
-        <MapView height="400px" showRoadMarkers={true} showAltRoutes={showAltRoutes} />
+        <MapView height="400px" showRoadMarkers={true} showAltRoutes={showAltRoutes} showSensors={false} />
       </div>
 
       <div className="ru-grid">

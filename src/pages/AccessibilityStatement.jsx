@@ -11,10 +11,10 @@ const AccessibilityStatement = () => {
       
       <div className="footer-page-content">
         <h2>Commitment to Accessibility</h2>
-        <p>The Department of Infrastructure & Emergency Management is committed to ensuring digital accessibility for people with disabilities. We are continually improving the user experience for everyone, and applying the relevant accessibility standards to the GovInfrastructure platform.</p>
+        <p>The Department of Infrastructure & Emergency Management is committed to ensuring digital accessibility for people with disabilities. We are continually improving the user experience for everyone, and applying the relevant accessibility standards to the FloodWatch platform.</p>
 
         <h2>Conformance Status</h2>
-        <p>The Web Content Accessibility Guidelines (WCAG) defines requirements for designers and developers to improve accessibility for people with disabilities. It defines three levels of conformance: Level A, Level AA, and Level AAA. The GovInfrastructure platform is partially conformant with WCAG 2.1 level AA. Partially conformant means that some parts of the content do not fully conform to the accessibility standard.</p>
+        <p>The Web Content Accessibility Guidelines (WCAG) defines requirements for designers and developers to improve accessibility for people with disabilities. It defines three levels of conformance: Level A, Level AA, and Level AAA. The FloodWatch platform is partially conformant with WCAG 2.1 level AA. Partially conformant means that some parts of the content do not fully conform to the accessibility standard.</p>
 
         <h2>Supported Features</h2>
         <ul>
@@ -28,10 +28,10 @@ const AccessibilityStatement = () => {
         <p>While we strive for comprehensive accessibility, some third-party mapping integrations (e.g., historical sensor data charts) may present limitations for visually impaired users. We are actively working with our vendors to resolve these issues.</p>
 
         <h2>Feedback</h2>
-        <p>We welcome your feedback on the accessibility of the GovInfrastructure platform. If you encounter accessibility barriers, please contact us:</p>
+        <p>We welcome your feedback on the accessibility of the FloodWatch platform. If you encounter accessibility barriers, please contact us:</p>
         <ul>
           <li>Phone: 1-800-GOV-ACC1</li>
-          <li>E-mail: accessibility@govinfrastructure.gov</li>
+          <li>E-mail: accessibility@floodwatch.gov</li>
         </ul>
         <p>We try to respond to feedback within 2 business days.</p>
       </div>

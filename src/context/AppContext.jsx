@@ -55,6 +55,20 @@ export const AppProvider = ({ children }) => {
     return sessionStorage.getItem('adminAuth') === 'true';
   });
 
+  // Theme state
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('appTheme') || 'dark'; // default to dark
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('appTheme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  };
+
   // App mode state (WebView hiding)
   const [isAppMode] = useState(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -326,10 +340,13 @@ export const AppProvider = ({ children }) => {
         if (wifiLatest && wifiDevices.length > 0) {
           const device = wifiDevices[0];
           const dist = wifiLatest.distanceCm;
+          const sensorHeight = device.sensorHeightCm || 200; // Fallback to 200cm if not set
+          const floodDepth = sensorHeight - dist;
+          
           let newStatus = 'normal';
-          if (dist <= device.thresholdDanger) {
+          if (floodDepth >= device.thresholdDanger) {
             newStatus = 'danger';
-          } else if (dist <= device.thresholdWarning) {
+          } else if (floodDepth >= device.thresholdWarning) {
             newStatus = 'warning';
           }
 
@@ -352,9 +369,11 @@ export const AppProvider = ({ children }) => {
 
             if (newStatus === 'danger') {
               // Transition INTO danger → upsert a danger alert
+              const deviceLoc = device.location && device.location !== device.name ? `${device.name}: ${device.location}` : device.name;
               const alertData = {
                 id: stableAlertId,
-                title: `CRITICAL: Flood Danger at ${device.name}`,
+                title: `CRITICAL: Flood Danger at ${deviceLoc}`,
+                location: device.location || device.name,
                 type: 'danger',
                 date: new Date().toISOString().split('T')[0],
                 sourceId,
@@ -381,7 +400,7 @@ export const AppProvider = ({ children }) => {
                     to: pushToken,
                     sound: 'default',
                     title: alertData.title,
-                    body: `Water level critical (${dist.toFixed(1)}cm). Immediate action required.`,
+                    body: `Water level critical (${Math.max(0, floodDepth).toFixed(1)}cm on road). Immediate action required.`,
                     data: { alertId: stableAlertId },
                   }),
                 }).catch(err => console.error('Failed to send push notification', err));
@@ -605,6 +624,8 @@ export const AppProvider = ({ children }) => {
         loginAdminContext,
         logoutAdminContext,
         isAppMode,
+        theme,
+        toggleTheme,
       }}
     >
       {children}

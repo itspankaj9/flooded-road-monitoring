@@ -135,11 +135,11 @@
   }
 }
 
-.type-error .alert-icon-col { color: var(--color-error); }
-.type-danger .alert-icon-col { color: var(--color-error); }
-.type-warning .alert-icon-col { color: var(--color-secondary-container); }
-.type-info .alert-icon-col { color: var(--color-primary); }
-.type-success .alert-icon-col { color: #166534; }
+.type-error .alert-icon-col   { color: #ef4444; }   /* Red   — danger/error */
+.type-danger .alert-icon-col  { color: #ef4444; }   /* Red   — danger */
+.type-warning .alert-icon-col { color: #f59e0b; }   /* Amber — warning / road update */
+.type-info .alert-icon-col    { color: #3b82f6; }   /* Blue  — info */
+.type-success .alert-icon-col { color: #22c55e; }   /* Green — resolved */
 
 .alert-content-col {
   flex-grow: 1;

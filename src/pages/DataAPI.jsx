@@ -11,8 +11,8 @@ const DataAPI = () => {
       
       <div className="footer-page-content">
         <h2>Overview</h2>
-        <p>The GovInfrastructure Open Data API provides real-time access to anonymized infrastructure telemetry, active civil alerts, and structural health metrics. This RESTful API is intended for researchers, public safety developers, and academic institutions.</p>
-        <p><strong>Base URL:</strong> <code>https://api.govinfrastructure.gov/v1</code></p>
+        <p>The FloodWatch Open Data API provides real-time access to anonymized infrastructure telemetry, active civil alerts, and structural health metrics. This RESTful API is intended for researchers, public safety developers, and academic institutions.</p>
+        <p><strong>Base URL:</strong> <code>https://api.floodwatch.gov/v1</code></p>
 
         <h2>Authentication</h2>
         <p>All endpoints are publicly accessible and do not require authentication for read-only (GET) requests. However, rate limits are strictly enforced. To increase your rate limit, you may request an API key via the developer portal.</p>

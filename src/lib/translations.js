@@ -21,7 +21,7 @@ export const translations = {
     btn_view_alerts: "View Active Alerts",
     stat_water_levels: "Regional Water Levels",
     stat_work_zones: "Active Work Zones",
-    stat_advisories: "Active Advisories",
+    stat_advisories: "Active Alerts",
     stat_critical: "Critical",
     stat_elevated: "Elevated",
     stat_normal: "Normal",

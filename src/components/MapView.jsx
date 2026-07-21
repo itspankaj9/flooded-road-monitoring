@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useRef, useEffect, useCallback, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useAppContext } from '../context/AppContext';
@@ -31,17 +31,31 @@ const MapView = ({
   height = '400px', 
   enableAdmin = false, 
   onMapClick, 
+  showSensors = true,
   showRoadMarkers = true,
   showAltRoutes = true,
   markingPoints = [],
   altMarkingPoints = [],
-  selectedColor = '#ef4444'
+  selectedColor = '#ef4444',
+  coordPoints = [],
 }) => {
   const mapContainer = useRef(null);
   const map = useRef(null);
+  const wrapperRef = useRef(null);
   const markersRef = useRef([]);
   const iotMarkersRef = useRef([]);
-  const { sensors, roadMarkers, weather, wifiIotDevices } = useAppContext();
+  const coordMarkersRef = useRef([]);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const { sensors, roadMarkers, weather, wifiIotDevices, theme } = useAppContext();
+
+  // Toggle fullscreen
+  const toggleFullscreen = useCallback(() => {
+    setIsFullscreen(prev => !prev);
+    // Resize map after transition
+    setTimeout(() => {
+      if (map.current) map.current.resize();
+    }, 350);
+  }, []);
 
   // Initialize map
   useEffect(() => {
@@ -64,6 +78,13 @@ const MapView = ({
     };
   }, []);
 
+  // Update map style when theme changes
+  useEffect(() => {
+    if (map.current) {
+      map.current.setStyle('mapbox://styles/mapbox/dark-v11');
+    }
+  }, [theme]);
+
   // Recenter map if weather location changes
   useEffect(() => {
     if (map.current && weather?.lng && weather?.lat) {
@@ -77,11 +98,11 @@ const MapView = ({
 
   // Update sensor markers when sensors change
   useEffect(() => {
-    if (!map.current) return;
-
     // Clear existing markers
     markersRef.current.forEach((m) => m.remove());
     markersRef.current = [];
+
+    if (!map.current || !showSensors) return;
 
     sensors.forEach((sensor) => {
       // Create custom marker element
@@ -122,29 +143,40 @@ const MapView = ({
 
   // Update IoT device markers
   useEffect(() => {
-    if (!map.current || !wifiIotDevices) return;
-
     // Clear existing IoT markers
     iotMarkersRef.current.forEach((m) => m.remove());
     iotMarkersRef.current = [];
 
+    if (!map.current || !wifiIotDevices || !showSensors) return;
+
     wifiIotDevices.forEach((device) => {
       if (!device.lat || !device.lng) return;
 
-      const color = statusColors[device.status] || '#22c55e';
+      const sensorHeight = device.sensorHeightCm || 200;
+      const floodDepth = sensorHeight - (device.latestDistanceCm || 0);
+      const displayDepth = Math.max(0, floodDepth);
+
+      let localStatus = 'normal';
+      if (floodDepth >= (device.thresholdDanger ?? 30)) {
+        localStatus = 'danger';
+      } else if (floodDepth >= (device.thresholdWarning ?? 10)) {
+        localStatus = 'warning';
+      }
+
+      const color = statusColors[localStatus] || '#22c55e';
 
       // Create custom IoT marker element
       const el = document.createElement('div');
       el.className = 'map-marker iot-map-marker';
-      el.style.width = device.status === 'danger' ? '24px' : '18px';
-      el.style.height = device.status === 'danger' ? '24px' : '18px';
+      el.style.width = localStatus === 'danger' ? '24px' : '18px';
+      el.style.height = localStatus === 'danger' ? '24px' : '18px';
       el.style.borderRadius = '50%';
       el.style.border = `3px solid ${color}`;
       el.style.backgroundColor = color;
       el.style.boxShadow = `0 0 12px ${color}, 0 0 4px ${color}`;
       el.style.position = 'relative';
 
-      if (device.status === 'danger') {
+      if (localStatus === 'danger') {
         el.style.animation = 'markerPulse 1s infinite';
       }
 
@@ -154,29 +186,29 @@ const MapView = ({
       icon.style.top = '50%';
       icon.style.left = '50%';
       icon.style.transform = 'translate(-50%, -50%)';
-      icon.style.fontSize = device.status === 'danger' ? '14px' : '10px';
+      icon.style.fontSize = localStatus === 'danger' ? '14px' : '10px';
       icon.style.color = 'white';
       icon.style.fontWeight = 'bold';
       icon.textContent = '◉';
       el.appendChild(icon);
 
-      const statusLabel = device.status === 'danger' ? '🔴 DANGER' : device.status === 'warning' ? '🟡 WARNING' : '🟢 NORMAL';
+      const statusLabel = localStatus === 'danger' ? '🔴 DANGER' : localStatus === 'warning' ? '🟡 WARNING' : '🟢 NORMAL';
 
       const popup = new mapboxgl.Popup({ offset: 25, closeButton: false }).setHTML(`
         <div style="font-family: Inter, sans-serif; padding: 6px; min-width: 180px;">
           <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
-            <span style="font-size: 16px;">📡</span>
+            <span style="font-size: 16px;">🌊</span>
             <strong style="font-size: 14px;">${device.name}</strong>
           </div>
           <div style="font-size: 11px; color: #888; margin-bottom: 6px;">ID: ${device.id}</div>
           <div style="font-size: 22px; font-weight: 800; color: ${color}; margin-bottom: 4px;">
-            ${device.latestDistanceCm.toFixed(1)} cm
+            ${displayDepth.toFixed(1)} cm <span style="font-size: 12px; font-weight: 500; color: #888;">(Flood Depth)</span>
           </div>
           <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.04em;">
             ${statusLabel}
           </div>
           <div style="font-size: 10px; color: #888; margin-top: 4px;">
-            ⚠️ Warn ≤${device.thresholdWarning}cm · 🔴 Danger ≤${device.thresholdDanger}cm
+            ⚠️ Warn ≥${device.thresholdWarning}cm · 🔴 Danger ≥${device.thresholdDanger}cm
           </div>
         </div>
       `);
@@ -488,9 +520,113 @@ const MapView = ({
     }
   }, [markingPoints, altMarkingPoints, enableAdmin, selectedColor]);
 
+  // Coordinate-based A/B markers and preview line
+  useEffect(() => {
+    if (!map.current) return;
+
+    const coordSourceId = 'coord-preview-source';
+    const coordLineLayerId = 'coord-preview-line';
+
+    // Clear old coordinate markers
+    coordMarkersRef.current.forEach(m => m.remove());
+    coordMarkersRef.current = [];
+
+    const doUpdate = () => {
+      // Remove old line layer/source
+      if (map.current.getLayer(coordLineLayerId)) map.current.removeLayer(coordLineLayerId);
+      if (map.current.getSource(coordSourceId)) map.current.removeSource(coordSourceId);
+
+      if (!coordPoints || coordPoints.length === 0) return;
+
+      // Add markers for each coord point
+      coordPoints.forEach((pt) => {
+        const el = document.createElement('div');
+        el.className = 'coord-map-marker';
+        const isA = pt.label === 'A';
+        el.style.cssText = `
+          width: 32px; height: 32px;
+          border-radius: 50%;
+          display: flex; align-items: center; justify-content: center;
+          font-size: 14px; font-weight: 800; color: white;
+          border: 3px solid white;
+          box-shadow: 0 0 12px ${isA ? 'rgba(34,197,94,0.5)' : 'rgba(245,158,11,0.5)'}, 0 2px 8px rgba(0,0,0,0.3);
+          background: ${isA ? 'linear-gradient(135deg, #22c55e, #16a34a)' : 'linear-gradient(135deg, #f59e0b, #d97706)'};
+          cursor: default;
+          animation: coordMarkerDrop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        `;
+        el.textContent = pt.label;
+
+        const popup = new mapboxgl.Popup({ offset: 20, closeButton: false }).setHTML(`
+          <div style="font-family: Inter, sans-serif; padding: 4px;">
+            <strong style="font-size: 13px;">Point ${pt.label}</strong>
+            <div style="font-size: 11px; color: #888; margin-top: 4px; font-family: 'Roboto Mono', monospace;">
+              Lat: ${pt.lat.toFixed(6)}<br/>Lng: ${pt.lng.toFixed(6)}
+            </div>
+          </div>
+        `);
+
+        const marker = new mapboxgl.Marker(el)
+          .setLngLat([pt.lng, pt.lat])
+          .setPopup(popup)
+          .addTo(map.current);
+
+        coordMarkersRef.current.push(marker);
+      });
+
+      // Draw dashed line between A and B
+      if (coordPoints.length === 2) {
+        const lineCoords = coordPoints.map(p => [p.lng, p.lat]);
+
+        map.current.addSource(coordSourceId, {
+          type: 'geojson',
+          data: {
+            type: 'Feature',
+            geometry: { type: 'LineString', coordinates: lineCoords },
+          },
+        });
+
+        map.current.addLayer({
+          id: coordLineLayerId,
+          type: 'line',
+          source: coordSourceId,
+          layout: { 'line-cap': 'round', 'line-join': 'round' },
+          paint: {
+            'line-color': '#22d3ee',
+            'line-width': 3,
+            'line-dasharray': [3, 2],
+            'line-opacity': 0.85,
+          },
+        });
+
+        // Fit bounds to show both points
+        const lngs = coordPoints.map(p => p.lng);
+        const lats = coordPoints.map(p => p.lat);
+        const bounds = [
+          [Math.min(...lngs) - 0.005, Math.min(...lats) - 0.005],
+          [Math.max(...lngs) + 0.005, Math.max(...lats) + 0.005],
+        ];
+        map.current.fitBounds(bounds, { padding: 60, maxZoom: 16, duration: 1000 });
+      }
+    };
+
+    if (map.current.isStyleLoaded()) {
+      doUpdate();
+    } else {
+      map.current.once('style.load', doUpdate);
+    }
+  }, [coordPoints]);
+
   return (
-    <div className="mapview-wrapper" style={{ height }}>
+    <div ref={wrapperRef} className={`mapview-wrapper ${isFullscreen ? 'mapview-fullscreen' : ''}`} style={{ height: isFullscreen ? '100%' : height }}>
       <div ref={mapContainer} className="mapview-container" />
+      {/* Fullscreen toggle */}
+      <button
+        className="map-fullscreen-btn"
+        onClick={toggleFullscreen}
+        title={isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
+      >
+        <span className="material-symbols-outlined">{isFullscreen ? 'fullscreen_exit' : 'fullscreen'}</span>
+      </button>
       {enableAdmin && (
         <div className="map-admin-hint">
           <span className="material-symbols-outlined">ads_click</span>

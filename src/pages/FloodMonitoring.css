@@ -15,7 +15,7 @@
 }
 
 .location-chooser {
-  margin-top: var(--spacing-xl);
+  margin-top: var(--spacing-sm);
 }
 
 @media (min-width: 768px) {

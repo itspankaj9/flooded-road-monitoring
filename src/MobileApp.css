@@ -1,0 +1,17 @@
+﻿/* ================================================================
+   MOBILE APP EXPERIENCE — Premium native-app feel (≤768px only)
+   This file overrides all page styles for mobile to create
+   an immersive, app-like experience. Desktop is untouched.
+   ================================================================ */
+
+@media (max-width: 768px) {
+
+  /* ═══════════════════════════════════════════════════════════════
+     GLOBAL MOBILE OVERRIDES
+     ═══════════════════════════════════════════════════════════════ */
+
+  body {
+    background-color: #f6f7fb;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }

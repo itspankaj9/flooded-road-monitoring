@@ -95,6 +95,7 @@ const RouteNavigator = () => {
   const [loading, setLoading] = useState(false);
   const [locating, setLocating] = useState(false);
   const [error, setError] = useState(null);
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
 
   // Store saved geometry ref for map restore
   if (saved?.routeGeo) savedGeoRef.current = saved.routeGeo;
@@ -570,9 +571,9 @@ const RouteNavigator = () => {
   return (
     <div className="route-navigator" id="route-navigator">
       {/* ─── Control Panel ─── */}
-      <div className="rn-panel">
+      <div className={`rn-panel ${!isPanelOpen ? 'collapsed' : ''}`}>
         {/* Header */}
-        <div className="rn-panel-header">
+        <div className="rn-panel-header" onClick={() => setIsPanelOpen(!isPanelOpen)} style={{ cursor: 'pointer' }}>
           <div className="rn-panel-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="6" cy="19" r="3" />
@@ -580,13 +581,20 @@ const RouteNavigator = () => {
               <circle cx="18" cy="5" r="3" />
             </svg>
           </div>
-          <div>
+          <div style={{ flex: 1 }}>
             <h3>Route Planner</h3>
             <p>Avoid admin-marked danger zones</p>
           </div>
+          <button type="button" aria-label="Toggle Panel" style={{ background: 'transparent', border: 'none', color: 'inherit', cursor: 'pointer', display: 'flex' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '24px', opacity: 0.7 }}>
+              {isPanelOpen ? 'expand_less' : 'expand_more'}
+            </span>
+          </button>
         </div>
 
-        <div className="rn-divider" />
+        {isPanelOpen && (
+          <>
+            <div className="rn-divider" />
 
         {/* Origin */}
         <div className="rn-field">
@@ -778,6 +786,8 @@ const RouteNavigator = () => {
             <span className="material-symbols-outlined" style={{ fontSize: 16 }}>close</span>
             Clear All
           </button>
+        )}
+          </>
         )}
       </div>
 

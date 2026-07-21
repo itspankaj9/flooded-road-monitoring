@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../context/AppContext';
+import AlertDetailsModal from '../components/AlertDetailsModal';
 import './CitizenAlerts.css';
 
 const typeLabel = {
@@ -21,19 +22,56 @@ const typeIcon = {
 const CitizenAlerts = () => {
   const { t, alerts } = useAppContext();
   const [filter, setFilter] = useState('all');
+  const [showInfo, setShowInfo] = useState(false);
+  const [selectedAlert, setSelectedAlert] = useState(null);
 
   const filteredAlerts = alerts.filter(a => filter === 'all' || a.type === filter);
 
   return (
     <div className="citizen-alerts container">
       <div className="page-header">
-        <div className="title-row">
-          <span className="material-symbols-outlined filled page-icon">notifications_active</span>
-          <h1 className="page-title">{t('alert_hero_title')}</h1>
+        <div className="title-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span
+              className="material-symbols-outlined filled page-icon"
+              style={{ fontSize: '24px', color: 'var(--color-on-surface)' }}
+            >
+              notifications_active
+            </span>
+            <h1
+              className="page-title"
+              style={{ margin: 0, fontSize: 'clamp(20px, 2vw, 26px)', fontWeight: 700 }}
+            >
+              {t('alert_hero_title')}
+            </h1>
+          </div>
+          <button 
+            onClick={() => setShowInfo(!showInfo)} 
+            title="Toggle Description"
+            style={{ 
+              background: showInfo ? 'var(--color-primary)' : 'var(--color-surface-container-low)', 
+              border: '1px solid var(--color-outline-variant)', 
+              color: showInfo ? '#ffffff' : 'var(--color-on-surface-variant)', 
+              cursor: 'pointer', 
+              display: 'inline-flex', 
+              padding: '6px 12px', 
+              borderRadius: '20px', 
+              alignItems: 'center', 
+              gap: '6px',
+              fontSize: '12px',
+              fontWeight: '600',
+              transition: 'all 0.2s'
+            }}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>info</span>
+            <span>{showInfo ? 'Hide Info' : 'Info'}</span>
+          </button>
         </div>
-        <p className="page-description">
-          {t('alert_hero_desc')}
-        </p>
+        {showInfo && (
+          <p className="page-description" style={{ marginTop: '12px' }}>
+            {t('alert_hero_desc')}
+          </p>
+        )}
       </div>
 
       <div className="ca-grid">
@@ -67,22 +105,35 @@ const CitizenAlerts = () => {
               </div>
             ) : (
               filteredAlerts.map(alert => {
+                const isRoadUpdate = alert.title.includes('Road marked as') || alert.title.includes('Closure') || alert.title.includes('Roadwork') || alert.title.includes('Maintenance') || alert.title.includes('Lane');
+
+                const category = isRoadUpdate ? 'ROAD UPDATE' : (typeLabel[alert.type] ?? alert.type).toUpperCase();
+                const icon = isRoadUpdate ? 'construction' : (typeIcon[alert.type] ?? 'info');
+                const typeClass = isRoadUpdate ? 'warning' : alert.type;
+
+                // Format title for Flood alerts to replace generic "Monitoring 1" with real address
+                let displayTitle = alert.title;
+                if (!isRoadUpdate && (displayTitle.includes('Monitoring 1') || displayTitle.includes('Monitoring Station'))) {
+                  displayTitle = displayTitle.replace('Monitoring 1', 'Mithi River Bridge, BKC, Mumbai').replace('Monitoring Station #1', 'Mithi River Bridge, BKC, Mumbai');
+                }
+
                 const displayDate = alert.updatedAt
                   ? new Date(alert.updatedAt).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })
                   : alert.date;
+
                 return (
-                <div key={alert.id} className={`alert-item type-${alert.type}`}>
+                <div key={alert.id} className={`alert-item type-${typeClass}`} onClick={() => setSelectedAlert(alert)} style={{ cursor: 'pointer' }}>
                   <div className="alert-icon-col">
                     <span className="material-symbols-outlined filled">
-                      {typeIcon[alert.type] ?? 'info'}
+                      {icon}
                     </span>
                   </div>
                   <div className="alert-content-col">
                     <div className="alert-meta">
-                      <span className="alert-category">{(typeLabel[alert.type] ?? alert.type).toUpperCase()}</span>
+                      <span className="alert-category">{category}</span>
                       <span className="alert-date">{displayDate}</span>
                     </div>
-                    <h3 className="alert-title">{alert.title}</h3>
+                    <h3 className="alert-title">{displayTitle}</h3>
                     {alert.description && (
                       <p className="alert-body">{alert.description}</p>
                     )}
@@ -127,6 +178,10 @@ const CitizenAlerts = () => {
           </div>
         </div>
       </div>
+
+      {selectedAlert && (
+        <AlertDetailsModal alert={selectedAlert} onClose={() => setSelectedAlert(null)} />
+      )}
     </div>
   );
 };

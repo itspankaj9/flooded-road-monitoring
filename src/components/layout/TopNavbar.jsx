@@ -7,7 +7,7 @@ const TopNavbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showLanguage, setShowLanguage] = useState(false);
-  const { alerts, currentLanguage, changeLanguage, t, isAppMode } = useContext(AppContext) || { alerts: [], currentLanguage: 'en', changeLanguage: () => {}, t: (k) => k, isAppMode: false };
+  const { alerts, currentLanguage, changeLanguage, t, isAppMode, theme, toggleTheme, sensors, weather } = useContext(AppContext) || { alerts: [], currentLanguage: 'en', changeLanguage: () => {}, t: (k) => k, isAppMode: false, theme: 'dark', toggleTheme: () => {}, sensors: [], weather: null };
   const dropdownRef = useRef(null);
   const langRef = useRef(null);
 
@@ -47,25 +47,53 @@ const TopNavbar = () => {
     }
   };
 
+  const dangerSensors = (sensors || []).filter(s => s.status === 'danger').length;
+  const warningSensors = (sensors || []).filter(s => s.status === 'warning').length;
+  const systemStatus = dangerSensors > 0
+    ? t('critical_alert')
+    : warningSensors > 0
+    ? t('elevated_risk')
+    : t('all_systems_normal');
+  const isRaining = weather?.isRaining || false;
+
   return (
     <header className="top-navbar">
       <div className="container nav-container">
         <div className="nav-brand">
-          <span className="nav-logo">GovInfrastructure</span>
-          <nav className={`nav-links ${mobileOpen ? 'mobile-open' : ''}`}>
-            <NavLink to="/" end className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} onClick={() => setMobileOpen(false)}>{t('home')}</NavLink>
-            <NavLink to="/flood-monitoring" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} onClick={() => setMobileOpen(false)}>{t('flood_monitoring')}</NavLink>
-            <NavLink to="/road-updates" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} onClick={() => setMobileOpen(false)}>{t('road_updates')}</NavLink>
-            <NavLink to="/alerts" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} onClick={() => setMobileOpen(false)}>{t('citizen_alerts')}</NavLink>
-            {!isAppMode && (
-              <NavLink to="/admin" className={({ isActive }) => isActive ? 'nav-link active admin-link' : 'nav-link admin-link'} onClick={() => setMobileOpen(false)}>
-                <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>admin_panel_settings</span>
-                {t('admin')}
-              </NavLink>
+          <div className="nav-logo-wrapper desktop-hidden">
+            <img src="/logo.png" alt="FloodWatch Logo" className="nav-logo-img" />
+            <span className="nav-logo">FloodWatch</span>
+          </div>
+          <div className="top-nav-status mobile-hidden">
+            <span className="status-indicator">
+              <span className={`status-dot ${dangerSensors > 0 ? 'pulse-red' : warningSensors > 0 ? 'pulse-amber' : 'pulse-green'}`}></span>
+            </span>
+            <span className="status-text">
+              {t('system_status')}: <strong>{systemStatus}</strong>
+            </span>
+            {weather && (
+              <span className="status-weather">
+                <span className="weather-divider">·</span>
+                <img src={weather.iconUrl} alt={weather.description} className="weather-icon-mini" />
+                <span className="weather-temp-text">{weather.temp}°C — {weather.description}</span>
+                {isRaining && <span className="weather-rain-warning"> ⚠ Rain active</span>}
+              </span>
             )}
-          </nav>
+          </div>
         </div>
         <div className="nav-actions">
+          {/* Theme Toggle */}
+          <button 
+            className="icon-btn theme-toggle-btn" 
+            aria-label="Toggle Theme"
+            onClick={toggleTheme}
+            style={{ marginRight: '8px' }}
+          >
+            <span className="material-symbols-outlined">
+              {theme === 'dark' ? 'light_mode' : 'dark_mode'}
+            </span>
+          </button>
+
           {/* Language Selector */}
           <div className="notification-wrapper" ref={langRef}>
             <button 
@@ -131,7 +159,7 @@ const TopNavbar = () => {
               </div>
             )}
           </div>
-          <button className="mobile-menu-btn" aria-label="Menu" onClick={() => setMobileOpen(!mobileOpen)}>
+          <button className="mobile-menu-btn desktop-hidden" aria-label="Menu" onClick={() => setMobileOpen(!mobileOpen)}>
             <span className="material-symbols-outlined">{mobileOpen ? 'close' : 'menu'}</span>
           </button>
         </div>

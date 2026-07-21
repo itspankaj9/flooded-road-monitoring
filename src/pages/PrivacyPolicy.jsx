@@ -11,7 +11,7 @@ const PrivacyPolicy = () => {
       
       <div className="footer-page-content">
         <h2>1. Introduction</h2>
-        <p>The Department of Infrastructure & Emergency Management is committed to protecting the privacy of citizens while maintaining the safety and resilience of public infrastructure. This Privacy Policy outlines how the GovInfrastructure platform collects, uses, and safeguards data.</p>
+        <p>The Department of Infrastructure & Emergency Management is committed to protecting the privacy of citizens while maintaining the safety and resilience of public infrastructure. This Privacy Policy outlines how the FloodWatch platform collects, uses, and safeguards data.</p>
 
         <h2>2. Data Collection</h2>
         <p>We collect information in two primary categories:</p>
@@ -30,7 +30,7 @@ const PrivacyPolicy = () => {
         <p>We employ enterprise-grade encryption for all data in transit and at rest. Access to sensitive diagnostic systems and unredacted citizen reports is restricted to authorized emergency management personnel and verified municipal administrators.</p>
 
         <h2>6. Contact Us</h2>
-        <p>If you have questions regarding our data practices or wish to request the deletion of a hazard report you submitted, please contact our Data Protection Officer at privacy@govinfrastructure.gov.</p>
+        <p>If you have questions regarding our data practices or wish to request the deletion of a hazard report you submitted, please contact our Data Protection Officer at privacy@floodwatch.gov.</p>
       </div>
     </div>
   );
