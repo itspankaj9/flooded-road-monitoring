@@ -42,7 +42,8 @@ const CitizenAlerts = () => {
               className="page-title"
               style={{ margin: 0, fontSize: 'clamp(20px, 2vw, 26px)', fontWeight: 700 }}
             >
-              {t('alert_hero_title')}
+              <span className="desktop-title">{t('alert_hero_title')}</span>
+              <span className="mobile-title">{t('citizen_alerts')}</span>
             </h1>
           </div>
           <button 

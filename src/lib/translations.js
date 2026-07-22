@@ -41,7 +41,7 @@ export const translations = {
     search: "Search",
     currently_viewing: "Currently viewing:",
     live_gps: "Live GPS Location",
-    fetch_live_gps: "Fetch Live GPS Location",
+    fetch_live_gps: "Live GPS",
     flood_risk_level: "Flood Risk Level:",
     feels_like: "Feels like",
 

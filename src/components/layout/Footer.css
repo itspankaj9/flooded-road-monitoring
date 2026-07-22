@@ -11,10 +11,10 @@
   }
 }
 
-/* Mobile: extra bottom padding so footer content isn't hidden behind bottom nav */
+/* Mobile: Remove footer only for mobile view */
 @media (max-width: 768px) {
   .footer {
-    padding-bottom: calc(var(--spacing-md) + 16px);
+    display: none !important;
   }
 }
 

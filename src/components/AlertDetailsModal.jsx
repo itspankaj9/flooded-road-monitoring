@@ -176,21 +176,21 @@ const AlertDetailsModal = ({ alert, onClose }) => {
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px', textAlign: 'left' }}>
           <tbody>
             <tr>
-              <td style={{ padding: '14px 8px', borderBottom: '1px solid var(--color-outline-variant, rgba(255,255,255,0.08))', color: 'var(--color-on-surface-variant, #999)', fontWeight: 600, width: '35%' }}>
+              <td style={{ padding: '14px 8px', borderBottom: '1px solid var(--color-outline-variant, rgba(255,255,255,0.08))', color: 'var(--color-on-surface-variant, #999)', fontWeight: 500, width: '35%' }}>
                 <span className="material-symbols-outlined" style={{ fontSize: '16px', verticalAlign: 'middle', marginRight: '6px' }}>info</span>
                 Problem Info
               </td>
-              <td style={{ padding: '14px 8px', borderBottom: '1px solid var(--color-outline-variant, rgba(255,255,255,0.08))', fontWeight: '700', color: color }}>
+              <td style={{ padding: '14px 8px', borderBottom: '1px solid var(--color-outline-variant, rgba(255,255,255,0.08))', fontWeight: '400', color: color }}>
                 {problem}
               </td>
             </tr>
             <tr>
-              <td style={{ padding: '14px 8px', borderBottom: '1px solid var(--color-outline-variant, rgba(255,255,255,0.08))', color: 'var(--color-on-surface-variant, #999)', fontWeight: 600 }}>
+              <td style={{ padding: '14px 8px', borderBottom: '1px solid var(--color-outline-variant, rgba(255,255,255,0.08))', color: 'var(--color-on-surface-variant, #999)', fontWeight: 500 }}>
                 <span className="material-symbols-outlined" style={{ fontSize: '16px', verticalAlign: 'middle', marginRight: '6px' }}>location_on</span>
                 Address / Location
               </td>
               <td style={{ padding: '14px 8px', borderBottom: '1px solid var(--color-outline-variant, rgba(255,255,255,0.08))', lineHeight: '1.4' }}>
-                <div style={{ fontWeight: '600' }}>{location}</div>
+                <div style={{ fontWeight: '400' }}>{location}</div>
                 {!isRoadUpdate && !hasFullAddress && sourceDevice?.lat && sourceDevice?.lng && (
                   <SensorAddress lat={sourceDevice.lat} lng={sourceDevice.lng} />
                 )}

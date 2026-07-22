@@ -534,7 +534,7 @@ const AdminDashboard = () => {
                       {expandedDeviceId === device.id && (
                         <div style={{ width: '100%', marginTop: 'var(--spacing-md)', paddingTop: 'var(--spacing-md)', borderTop: '1px solid var(--color-outline-variant)' }}>
                           <h3 style={{ margin: '0 0 var(--spacing-sm) 0', fontSize: '16px' }}>Live Readings</h3>
-                          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(250px, 1fr) 2fr', gap: 'var(--spacing-md)' }}>
+                          <div className="live-readings-grid">
                             {/* Live Reading Card */}
                             <div className="card" style={{ padding: 'var(--spacing-md)', backgroundColor: 'var(--color-surface)' }}>
                               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-on-surface-variant)', marginBottom: 'var(--spacing-sm)' }}>
@@ -576,7 +576,7 @@ const AdminDashboard = () => {
                             </div>
                             
                             {/* Live Chart */}
-                            <div className="card" style={{ padding: 'var(--spacing-md)', backgroundColor: 'var(--color-surface)', height: '250px' }}>
+                            <div className="card live-chart-card" style={{ padding: 'var(--spacing-md)', backgroundColor: 'var(--color-surface)' }}>
                               {wifiSensorHistory && wifiSensorHistory.length >= 2 ? (
                                 <ResponsiveContainer width="100%" height="100%">
                                   <AreaChart data={wifiSensorHistory.map((r, i) => ({
@@ -647,18 +647,18 @@ const AdminDashboard = () => {
                     <input type="text" className="input-field" placeholder="e.g. Mithi River Bridge Ultrasonic Sensor" value={newIotDevice.name} onChange={e => setNewIotDevice(v => ({ ...v, name: e.target.value }))} required />
                   </div>
                   <div className="form-group" style={{ gridColumn: '1 / -1' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                    <div className="form-label-header">
                       <label style={{ margin: 0 }}>Location / Street Address</label>
                       <button 
                         type="button" 
                         onClick={() => detectAddressFromCoords(newIotDevice.lat, newIotDevice.lng, false)}
-                        style={{ background: 'none', border: 'none', color: 'var(--color-primary)', cursor: 'pointer', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: '600' }}
+                        className="btn-auto-detect"
                       >
                         <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>my_location</span>
                         Auto-detect from Coords
                       </button>
                     </div>
-                    <input type="text" className="input-field" placeholder="e.g. Bandra Kurla Complex, Mumbai (or auto-detect above)" value={newIotDevice.location} onChange={e => setNewIotDevice(v => ({ ...v, location: e.target.value }))} />
+                    <input type="text" className="input-field" placeholder="e.g. Bandra Kurla Complex, Mumbai" value={newIotDevice.location} onChange={e => setNewIotDevice(v => ({ ...v, location: e.target.value }))} />
                   </div>
                   <div className="form-group">
                     <label>Latitude</label>
@@ -738,11 +738,13 @@ const AdminDashboard = () => {
                       ) : (
                         <>
                           <div className="rw-admin-info">
-                            <strong>{rw.location}</strong>
-                            <span className={`badge ${rw.status.includes('Full') ? 'badge-error' : 'badge-warning'}`} style={{ marginLeft: '8px' }}>{rw.status}</span>
-                            <p className="text-caption" style={{ margin: '2px 0' }}>{rw.reason}</p>
-                            {rw.altRoute && <p className="text-caption">↪ {rw.altRoute}</p>}
-                            <p className="text-caption">Progress: {rw.progress}% · {rw.updated}</p>
+                            <span className="rw-admin-title">{rw.location}</span>
+                            <div style={{ marginTop: '6px', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                              <span className={`badge ${rw.status.includes('Full') ? 'badge-error' : 'badge-warning'}`}>{rw.status}</span>
+                              {rw.reason && <span className="text-caption" style={{ opacity: 0.85 }}>{rw.reason}</span>}
+                            </div>
+                            {rw.altRoute && <p className="text-caption" style={{ margin: '4px 0 0 0' }}>↪ {rw.altRoute}</p>}
+                            <p className="text-caption" style={{ margin: '4px 0 0 0', opacity: 0.75 }}>Progress: {rw.progress}% · {rw.updated}</p>
                           </div>
                           <div className="rw-admin-actions">
                             <button className="btn btn-sm btn-outline" onClick={() => { setEditingRW(rw.id); setEditRWData({ ...rw }); }}>
@@ -833,11 +835,13 @@ const AdminDashboard = () => {
                     return (
                       <div key={alert.id} className={`alert-admin-item type-${alert.type}`}>
                         <div className="alert-admin-info">
-                          <span className={`badge badge-${alert.type === 'error' ? 'error' : alert.type === 'warning' ? 'warning' : alert.type === 'success' ? 'success' : 'info'}`}>
-                            {(alertTypeLabels[alert.type] || alert.type).toUpperCase()}
-                          </span>
-                          <strong style={{ marginLeft: '8px' }}>{alert.title}</strong>
-                          <span className="text-caption" style={{ display: 'block', marginTop: '2px' }}>{alert.date}</span>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                            <span className={`badge badge-${alert.type === 'error' ? 'error' : alert.type === 'warning' ? 'warning' : alert.type === 'success' ? 'success' : 'info'}`}>
+                              {(alertTypeLabels[alert.type] || alert.type).toUpperCase()}
+                            </span>
+                            <span className="alert-admin-title">{alert.title}</span>
+                          </div>
+                          <span className="text-caption" style={{ display: 'block', marginTop: '4px', opacity: 0.75 }}>{alert.date}</span>
                         </div>
                         <button className="btn btn-sm btn-outline-danger" onClick={() => removeAlert(alert.id)}>
                           <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>delete</span>

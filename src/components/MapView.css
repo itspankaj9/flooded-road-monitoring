@@ -142,7 +142,11 @@ body:has(.mapview-fullscreen) .card-body {
 
 .map-admin-hint .material-symbols-outlined {
   font-size: 14px;
-  color: var(--color-secondary-container);
+  color: var(--color-primary);
+}
+
+[data-theme='dark'] .map-admin-hint .material-symbols-outlined {
+  color: #38bdf8;
 }
 
 @media (min-width: 768px) {

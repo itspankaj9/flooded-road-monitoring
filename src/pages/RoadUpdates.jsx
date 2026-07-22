@@ -14,57 +14,66 @@ const RoadUpdates = () => {
   const [showAltRoutes, setShowAltRoutes] = useState(true);
   const [showInfo, setShowInfo] = useState(false);
 
-  const fullClosures = roadworks.filter(r => r.status.includes('Full'));
-  const partialLanes = roadworks.filter(r => r.status.includes('Partial'));
-  const maintenance = roadworks.filter(r => r.status === 'Maintenance');
+  const fullClosures = roadworks.filter(r => r.status && r.status.toLowerCase().includes('full'));
+  const partialLanes = roadworks.filter(r => r.status && (r.status.toLowerCase().includes('partial') || r.status.toLowerCase().includes('lane')));
+  const maintenance = roadworks.filter(r => r.status && (r.status.toLowerCase().includes('maint') || r.status.toLowerCase().includes('repair')));
 
   return (
-    <div className="road-updates">
-      {/* Hero Section */}
-      <section className="hero-section">
-        <div className="hero-background road-hero-bg"></div>
-        <div className="container hero-content">
-          <span className="hero-subtitle">{t('road_hero_subtitle')}</span>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', flexWrap: 'wrap' }}>
-            <h1 className="hero-title" style={{ margin: 0, display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-              {t('road_hero_title')}
-            </h1>
-            <button 
-              onClick={() => setShowInfo(!showInfo)} 
-              title="Toggle Description"
-              style={{ 
-                background: showInfo ? 'var(--color-primary)' : 'rgba(255,255,255,0.08)', 
-                border: '1px solid var(--color-outline-variant)', 
-                color: showInfo ? '#ffffff' : 'inherit', 
-                cursor: 'pointer', 
-                display: 'inline-flex', 
-                padding: '6px 12px', 
-                borderRadius: '20px', 
-                alignItems: 'center', 
-                gap: '6px',
-                fontSize: '12px',
-                fontWeight: '600',
-                transition: 'all 0.2s'
-              }}
+    <div className="road-updates container">
+      <div className="page-header">
+        <div className="title-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span
+              className="material-symbols-outlined filled page-icon"
+              style={{ fontSize: '24px', color: 'var(--color-on-surface)' }}
             >
-              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>info</span>
-              <span>{showInfo ? 'Hide Info' : 'Info'}</span>
-            </button>
+              traffic
+            </span>
+            <h1
+              className="page-title"
+              style={{ margin: 0, fontSize: 'clamp(20px, 2vw, 26px)', fontWeight: 700 }}
+            >
+              <span className="desktop-title">{t('road_hero_title')}</span>
+              <span className="mobile-title">{t('road_updates')}</span>
+            </h1>
           </div>
-          {showInfo && <p className="hero-description" style={{ marginTop: '12px' }}>{t('road_hero_desc')}</p>}
+          <button 
+            onClick={() => setShowInfo(!showInfo)} 
+            title="Toggle Description"
+            style={{ 
+              background: showInfo ? 'var(--color-primary)' : 'var(--color-surface-container-low)', 
+              border: '1px solid var(--color-outline-variant)', 
+              color: showInfo ? '#ffffff' : 'var(--color-on-surface-variant)', 
+              cursor: 'pointer', 
+              display: 'inline-flex', 
+              padding: '6px 12px', 
+              borderRadius: '20px', 
+              alignItems: 'center', 
+              gap: '6px',
+              fontSize: '12px',
+              fontWeight: '600',
+              transition: 'all 0.2s'
+            }}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>info</span>
+            <span>{showInfo ? 'Hide Info' : 'Info'}</span>
+          </button>
         </div>
-      </section>
-
-      <div className="container">
+        {showInfo && (
+          <p className="page-description" style={{ marginTop: '12px' }}>
+            {t('road_hero_desc')}
+          </p>
+        )}
+      </div>
         {/* Live Road Map */}
       <div className="road-map-section">
-        <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '16px' }}>
-          <div>
-            <h2 className="section-title">
-              <span className="material-symbols-outlined filled">map</span>
+        <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px' }}>
+          <div style={{ textAlign: 'left' }}>
+            <h2 className="section-title" style={{ margin: 0 }}>
+              <span className="material-symbols-outlined filled" style={{ color: 'var(--color-on-surface)' }}>map</span>
               {t('live_road_map')}
             </h2>
-            <span className="text-caption">
+            <span className="text-caption" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
               <span className="material-symbols-outlined" style={{ fontSize: '14px', verticalAlign: 'middle' }}>info</span>
               {t('map_info')}
             </span>
@@ -106,12 +115,12 @@ const RoadUpdates = () => {
               {roadworks.map(rw => (
                 <div key={rw.id} className="roadwork-item card">
                   <div className="rw-header">
-                    <div>
-                      <h3 className="rw-location">{rw.location}</h3>
-                      <p className="text-caption">{rw.reason}</p>
-                    </div>
-                    <div className={`rw-status badge ${statusBadgeClass(rw.status)}`}>
-                      {rw.status}
+                    <h3 className="rw-location">{rw.location}</h3>
+                    {rw.reason && <p className="rw-reason">{rw.reason}</p>}
+                    <div className="rw-badge-container">
+                      <span className={`rw-status badge ${statusBadgeClass(rw.status)}`}>
+                        {rw.status}
+                      </span>
                     </div>
                   </div>
 
@@ -123,7 +132,7 @@ const RoadUpdates = () => {
 
                   <div className="rw-progress-wrapper">
                     <div className="rw-progress-header">
-                      <span className="text-caption">Completion Progress</span>
+                      <span>Completion Progress</span>
                       <span className="rw-progress-text">{rw.progress}%</span>
                     </div>
                     <div className="progress-bar-container">
@@ -132,8 +141,8 @@ const RoadUpdates = () => {
                   </div>
 
                   <div className="rw-footer">
-                    <span className="text-caption">Updated: {rw.updated}</span>
-                    <span className="text-caption">ID: {rw.id}</span>
+                    <span>Updated: {rw.updated}</span>
+                    <span>ID: {rw.id}</span>
                   </div>
                 </div>
               ))}
@@ -191,7 +200,6 @@ const RoadUpdates = () => {
             </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-﻿/* ================================================================
+/* ================================================================
    MOBILE APP EXPERIENCE — Premium native-app feel (≤768px only)
    This file overrides all page styles for mobile to create
    an immersive, app-like experience. Desktop is untouched.
@@ -15,3 +15,20 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  /* Hide footer on mobile view */
+  .footer {
+    display: none !important;
+  }
+
+  .desktop-title {
+    display: none !important;
+  }
+  .mobile-title {
+    display: inline !important;
+  }
+}
+
+.mobile-title {
+  display: none;
+}

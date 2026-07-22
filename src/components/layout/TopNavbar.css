@@ -365,6 +365,7 @@
   border-bottom: 1px solid var(--color-outline-variant);
   transition: background-color 0.2s ease;
   cursor: pointer;
+  align-items: flex-start;
 }
 
 .notification-item:hover {
@@ -418,8 +419,20 @@
   margin: 0 0 4px 0;
   font-size: var(--font-size-label);
   color: var(--color-on-surface);
-  font-weight: var(--font-weight-bold);
-  line-height: 1.4;
+  font-weight: 400;
+  line-height: 1.45;
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (min-width: 768px) {
+  .notification-content h4 {
+    -webkit-line-clamp: 2;
+  }
 }
 
 .notification-time {

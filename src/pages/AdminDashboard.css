@@ -37,11 +37,17 @@
 }
 
 .card-title .material-symbols-outlined {
-  color: var(--color-secondary-container);
+  color: #0284c7;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+[data-theme='dark'] .card-title .material-symbols-outlined {
+  color: #38bdf8;
 }
 
 .admin-portal-icon {
-  color: var(--color-secondary-container);
+  color: #0284c7;
 }
 
 [data-theme='dark'] .admin-portal-icon {
@@ -1268,5 +1274,186 @@
   .active-markers-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ================================================================
+   ADMIN DASHBOARD MOBILE RESPONSIVENESS & SCROLLING ENHANCEMENTS
+   ================================================================ */
+
+/* Responsive Live Readings & Chart Grid */
+.live-readings-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .live-readings-grid {
+    grid-template-columns: minmax(240px, 1fr) 2fr;
+  }
+}
+
+.live-chart-card {
+  width: 100%;
+  min-width: 0;
+  height: 250px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+@media (max-width: 767px) {
+  .live-chart-card {
+    height: 220px;
+    padding: var(--spacing-sm) !important;
+  }
+}
+
+/* Scrollable & Compact Containers for Admin Lists */
+.iot-devices-list,
+.roadworks-admin-list,
+.alerts-admin-list,
+.active-markers-grid {
+  max-height: 480px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-outline-variant) transparent;
+  padding-right: 4px;
+}
+
+.iot-devices-list::-webkit-scrollbar,
+.roadworks-admin-list::-webkit-scrollbar,
+.alerts-admin-list::-webkit-scrollbar,
+.active-markers-grid::-webkit-scrollbar {
+  width: 4px;
+}
+
+.iot-devices-list::-webkit-scrollbar-thumb,
+.roadworks-admin-list::-webkit-scrollbar-thumb,
+.alerts-admin-list::-webkit-scrollbar-thumb,
+.active-markers-grid::-webkit-scrollbar-thumb {
+  background-color: var(--color-outline-variant);
+  border-radius: 4px;
+}
+
+/* Mobile Layout Tweaks */
+@media (max-width: 767px) {
+  .admin-dashboard {
+    padding-left: var(--spacing-xs);
+    padding-right: var(--spacing-xs);
+  }
+
+  .admin-tabs {
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    gap: 6px;
+    padding-bottom: 6px;
+  }
+
+  .admin-tab {
+    padding: 8px 12px;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  .rw-admin-actions {
+    flex-wrap: wrap;
+    gap: 6px !important;
+  }
+
+  .form-grid-2 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .iot-data-pills {
+    gap: 6px !important;
+  }
+}
+
+/* Enhanced Form Label Header & Input Controls */
+.form-label-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+  .form-label-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
+
+.btn-auto-detect {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  cursor: pointer;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.btn-auto-detect:hover {
+  text-decoration: underline;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-on-surface);
+  margin-bottom: 6px;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.input-field {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  font-size: 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-outline-variant);
+  background-color: var(--color-surface-container-lowest);
+  color: var(--color-on-surface);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+[data-theme='dark'] .input-field {
+  background-color: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #f1f5f9;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.15);
+}
+
+/* Unbold Titles in Admin List Items */
+.rw-admin-title,
+.alert-admin-title {
+  font-size: 14px;
+  font-weight: 500; /* Strictly unbold / Regular medium text */
+  line-height: 1.45;
+  color: var(--color-on-surface);
+  word-break: break-word;
+  display: block;
+}
+
+[data-theme='dark'] .rw-admin-title,
+[data-theme='dark'] .alert-admin-title {
+  color: #e2e8f0;
 }
 

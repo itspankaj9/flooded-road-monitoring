@@ -109,16 +109,36 @@ const HomePortal = () => {
           {/* Bento Item 4: Water Levels */}
           <div className="bento-card bento-stat bento-water-card">
             <div className="bento-card-bg-overlay"></div>
-            <div className="bento-content">
-              <div className="stat-header">
-                <div className="stat-icon-wrapper primary"><span className="material-symbols-outlined">water</span></div>
-                <span className="badge badge-success">Live</span>
+            <div className="bento-content bento-alerts-content">
+              <div className="bento-alerts-left">
+                <div className="stat-header">
+                  <div className="stat-icon-wrapper primary"><span className="material-symbols-outlined">water</span></div>
+                  <span className="badge badge-success">Live</span>
+                </div>
+                <div className="stat-body">
+                  <p className="text-caption">{t('stat_water_levels')}</p>
+                  <h3 className="bento-value">
+                    {dangerSensors > 0 ? t('stat_critical') : warningSensors > 0 ? t('stat_elevated') : allSensors.length === 0 ? t('stat_no_sensors') : t('stat_normal')}
+                  </h3>
+                </div>
               </div>
-              <div className="stat-body">
-                <p className="text-caption">{t('stat_water_levels')}</p>
-                <h3 className="bento-value">
-                  {dangerSensors > 0 ? t('stat_critical') : warningSensors > 0 ? t('stat_elevated') : allSensors.length === 0 ? t('stat_no_sensors') : t('stat_normal')}
-                </h3>
+
+              <div className="bento-alerts-details">
+                <h4 className="details-title">Flood Status</h4>
+                {allSensors.length === 0 ? (
+                  <p className="details-empty">No sensors online.</p>
+                ) : dangerSensors === 0 && warningSensors === 0 ? (
+                  <p className="details-empty">All water levels normal.</p>
+                ) : (
+                  <ul className="details-list">
+                    {allSensors.filter(s => s.status === 'danger' || s.status === 'warning').slice(0, 2).map((s) => (
+                      <li key={s.id} className="details-item">
+                        <span className={`details-dot ${s.status === 'danger' ? 'dot-danger' : 'dot-warning'}`}></span>
+                        <span className="details-text">{s.location || s.name}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
             </div>
           </div>
@@ -126,14 +146,32 @@ const HomePortal = () => {
           {/* Bento Item 5: Active Work Zones */}
           <div className="bento-card bento-stat bento-work-card">
             <div className="bento-card-bg-overlay"></div>
-            <div className="bento-content">
-              <div className="stat-header">
-                <div className="stat-icon-wrapper primary"><span className="material-symbols-outlined">construction</span></div>
-                <span className="text-caption" style={{ fontWeight: '700' }}>{t('statewide')}</span>
+            <div className="bento-content bento-alerts-content">
+              <div className="bento-alerts-left">
+                <div className="stat-header">
+                  <div className="stat-icon-wrapper primary"><span className="material-symbols-outlined">construction</span></div>
+                  <span className="text-caption" style={{ fontWeight: '700' }}>{t('statewide')}</span>
+                </div>
+                <div className="stat-body">
+                  <p className="text-caption">{t('stat_work_zones')}</p>
+                  <h3 className="bento-value">{activeRoadworks}</h3>
+                </div>
               </div>
-              <div className="stat-body">
-                <p className="text-caption">{t('stat_work_zones')}</p>
-                <h3 className="bento-value">{activeRoadworks}</h3>
+
+              <div className="bento-alerts-details">
+                <h4 className="details-title">Recent Roadworks</h4>
+                {roadworks.length === 0 ? (
+                  <p className="details-empty">No active work zones reported.</p>
+                ) : (
+                  <ul className="details-list">
+                    {roadworks.slice(0, 2).map((rw) => (
+                      <li key={rw.id} className="details-item">
+                        <span className="details-dot dot-warning"></span>
+                        <span className="details-text">{rw.title || rw.location || 'Roadwork'}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
             </div>
           </div>

@@ -82,66 +82,79 @@ const FloodMonitoring = () => {
   });
 
   return (
-    <div className="flood-monitoring">
-      {/* Hero Section */}
-      <section className="hero-section">
-        <div className="hero-background flood-hero-bg"></div>
-        <div className="container hero-content">
-          <span className="hero-subtitle">{t('flood_hero_subtitle')}</span>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', flexWrap: 'wrap' }}>
-            <h1 className="hero-title" style={{ margin: 0, display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-              {t('flood_hero_title')}
-            </h1>
-            <button 
-              onClick={() => setShowInfo(!showInfo)} 
-              title="Toggle Description"
-              style={{ 
-                background: showInfo ? 'var(--color-primary)' : 'rgba(255,255,255,0.08)', 
-                border: '1px solid var(--color-outline-variant)', 
-                color: showInfo ? '#ffffff' : 'inherit', 
-                cursor: 'pointer', 
-                display: 'inline-flex', 
-                padding: '6px 12px', 
-                borderRadius: '20px', 
-                alignItems: 'center', 
-                gap: '6px',
-                fontSize: '12px',
-                fontWeight: '600',
-                transition: 'all 0.2s'
-              }}
+    <div className="flood-monitoring container">
+      <div className="page-header">
+        <div className="title-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span
+              className="material-symbols-outlined filled page-icon"
+              style={{ fontSize: '24px', color: 'var(--color-on-surface)' }}
             >
-              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>info</span>
-              <span>{showInfo ? 'Hide Info' : 'Info'}</span>
-            </button>
+              water_drop
+            </span>
+            <h1
+              className="page-title"
+              style={{ margin: 0, fontSize: 'clamp(20px, 2vw, 26px)', fontWeight: 700 }}
+            >
+              <span className="desktop-title">{t('flood_hero_title')}</span>
+              <span className="mobile-title">{t('flood_monitoring')}</span>
+            </h1>
           </div>
-          {showInfo && <p className="hero-description" style={{ marginTop: '12px' }}>{t('flood_hero_desc')}</p>}
+          <button 
+            onClick={() => setShowInfo(!showInfo)} 
+            title="Toggle Description"
+            style={{ 
+              background: showInfo ? 'var(--color-primary)' : 'var(--color-surface-container-low)', 
+              border: '1px solid var(--color-outline-variant)', 
+              color: showInfo ? '#ffffff' : 'var(--color-on-surface-variant)', 
+              cursor: 'pointer', 
+              display: 'inline-flex', 
+              padding: '6px 12px', 
+              borderRadius: '20px', 
+              alignItems: 'center', 
+              gap: '6px',
+              fontSize: '12px',
+              fontWeight: '600',
+              transition: 'all 0.2s'
+            }}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>info</span>
+            <span>{showInfo ? 'Hide Info' : 'Info'}</span>
+          </button>
         </div>
-      </section>
-
-      <div className="container">
+        {showInfo && (
+          <p className="page-description" style={{ marginTop: '12px' }}>
+            {t('flood_hero_desc')}
+          </p>
+        )}
+      </div>
         {/* Location Chooser */}
-      <div className="location-chooser card" style={{ marginBottom: 'var(--spacing-lg)' }}>
-        <div className="card-body" style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
-          <form onSubmit={handleSearch} style={{ display: 'flex', gap: '8px', flex: 1, minWidth: '200px' }}>
+      <div className="location-chooser card">
+        <div className="card-body location-chooser-body">
+          <form onSubmit={handleSearch} className="location-search-form">
             <input 
               type="text" 
+              className="input-field location-search-input"
               placeholder={t('search_placeholder')} 
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              style={{ flex: 1, minWidth: 0, padding: '10px 14px', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-outline-variant)', fontSize: '15px' }}
             />
-            <button type="submit" className="btn btn-primary" style={{ padding: '0 20px' }}>
+            <button type="submit" className="btn btn-primary location-search-btn">
               <span className="material-symbols-outlined">search</span>
-              {t('search')}
+              <span>{t('search')}</span>
             </button>
           </form>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <span style={{ fontSize: '14px', color: 'var(--color-on-surface-variant)' }}>
-              {t('currently_viewing')} <strong style={{ color: 'var(--color-on-surface)' }}>{customCity ? weather?.cityName : t('live_gps')}</strong>
+
+          <div className="location-info-row">
+            <span className="location-current-text">
+              {t('currently_viewing')} <strong>{customCity ? weather?.cityName : t('live_gps')}</strong>
             </span>
-            <button onClick={handleLiveLocation} className={`btn ${customCity ? 'btn-outline' : 'btn-primary'}`} style={{ padding: '6px 12px', fontSize: '13px', minHeight: '32px' }}>
-              <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>my_location</span>
-              {t('fetch_live_gps')}
+            <button 
+              onClick={handleLiveLocation} 
+              className={`btn ${customCity ? 'btn-outline' : 'btn-primary'} location-gps-btn`}
+            >
+              <span className="material-symbols-outlined">my_location</span>
+              <span>{t('fetch_live_gps')}</span>
             </button>
           </div>
         </div>
@@ -397,7 +410,6 @@ const FloodMonitoring = () => {
             </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
   );
